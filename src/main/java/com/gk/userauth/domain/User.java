@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,19 +15,20 @@ import static java.util.Objects.requireNonNull;
 @Value
 @Builder
 public class User implements UserDetails {
-    private static final long serialVersionUID = 2396654715019746670L;
-
     String id;
     String username;
+    String phone;
     String password;
 
     @JsonCreator
-    User(@JsonProperty("id") final String id,
-         @JsonProperty("username") final String username,
-         @JsonProperty("password") final String password) {
+    public User(@JsonProperty("id") final String id,
+                @JsonProperty("username") final String username,
+                @JsonProperty("phone") final String phone,
+                @JsonProperty("password") final String password) {
         super();
-        this.id = requireNonNull(id);
+        this.id = requireNonNull(username);
         this.username = requireNonNull(username);
+        this.phone = phone;
         this.password = requireNonNull(password);
     }
 

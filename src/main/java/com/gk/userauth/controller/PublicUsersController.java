@@ -6,10 +6,10 @@ import com.gk.userauth.service.UserCrudService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.Map;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -24,29 +24,35 @@ final class PublicUsersController {
     @NonNull
     UserCrudService users;
 
-    @PostMapping("/register")
-    String register(
+    @RequestMapping(value = "/register", method = RequestMethod.PUT, produces = "application/json")
+    Map register(
             @RequestParam("username") final String username,
+            @RequestParam("phone") final String phone,
             @RequestParam("password") final String password) {
         users
                 .save(
                         User
                                 .builder()
-                                .id(username)
                                 .username(username)
+                                .phone(phone)
                                 .password(password)
                                 .build()
                 );
 
-        return login(username, password);
+        return Collections.singletonMap("token", login(username, password));
     }
 
-    @PostMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     String login(
             @RequestParam("username") final String username,
             @RequestParam("password") final String password) {
         return authentication
                 .login(username, password)
                 .orElseThrow(() -> new RuntimeException("invalid login and/or password"));
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
+    boolean logout(@RequestParam("token") final String token) {
+        return authentication.logout(token);
     }
 }

@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,27 +20,21 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 final class SecuredUsersController {
-    @NonNull
-    UserAuthenticationService authentication;
+
     @NonNull
     UserCrudService users;
 
-    @GetMapping("/current")
+    @RequestMapping(value = "/current", method = RequestMethod.GET, produces = "application/json")
     User getCurrent(@AuthenticationPrincipal final User user) {
         return user;
     }
 
-    @GetMapping("/authenticated")
+    @RequestMapping(value = "/authenticated", method = RequestMethod.GET, produces = "application/json")
     List<User> getLoggedInUsers(@AuthenticationPrincipal final User user) {
          if(user != null){
              return users.loggedInUsers();
          }
 
          return new ArrayList<>();
-    }
-
-    @GetMapping("/logout")
-    boolean logout(@AuthenticationPrincipal final String token) {
-        return authentication.logout(token);
     }
 }

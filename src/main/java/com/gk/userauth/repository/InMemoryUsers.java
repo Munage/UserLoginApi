@@ -4,6 +4,8 @@ import com.gk.userauth.domain.User;
 import com.gk.userauth.service.UserAuthenticationService;
 import com.gk.userauth.service.UserCrudService;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -15,13 +17,19 @@ import static java.util.Optional.ofNullable;
 final class InMemoryUsers implements UserCrudService {
 
     Map<String, User> users = new HashMap<>();
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    public InMemoryUsers(BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @NonNull
     UserAuthenticationService authentication;
 
-
     @Override
     public User save(final User user) {
+        //TODO: use bCryptPasswordEncoder.encode(user.getPassword()) when storing user's password in the database
         return users.put(user.getId(), user);
     }
 
