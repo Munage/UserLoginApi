@@ -1,7 +1,6 @@
 package com.gk.userauth.controller;
 
 import com.gk.userauth.domain.User;
-import com.gk.userauth.service.UserAuthenticationService;
 import com.gk.userauth.service.UserCrudService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -10,7 +9,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -30,11 +31,11 @@ final class SecuredUsersController {
     }
 
     @RequestMapping(value = "/authenticated", method = RequestMethod.GET, produces = "application/json")
-    List<User> getLoggedInUsers(@AuthenticationPrincipal final User user) {
+    Map<String, List<User>> getLoggedInUsers(@AuthenticationPrincipal final User user) {
          if(user != null){
-             return users.loggedInUsers();
+             return Collections.singletonMap("users", users.loggedInUsers());
          }
 
-         return new ArrayList<>();
+         return Collections.singletonMap("users", new ArrayList<>());
     }
 }

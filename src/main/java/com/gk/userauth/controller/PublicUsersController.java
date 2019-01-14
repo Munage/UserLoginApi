@@ -1,6 +1,7 @@
 package com.gk.userauth.controller;
 
 import com.gk.userauth.domain.User;
+import com.gk.userauth.dto.LoginResponse;
 import com.gk.userauth.service.UserAuthenticationService;
 import com.gk.userauth.service.UserCrudService;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -33,6 +35,7 @@ final class PublicUsersController {
                 .save(
                         User
                                 .builder()
+                                .id(username)
                                 .username(username)
                                 .phone(phone)
                                 .password(password)
@@ -43,12 +46,16 @@ final class PublicUsersController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    String login(
+    LoginResponse login(
             @RequestParam("username") final String username,
             @RequestParam("password") final String password) {
-        return authentication
+        String token = authentication
                 .login(username, password)
                 .orElseThrow(() -> new RuntimeException("invalid login and/or password"));
+
+        Optional<User> user = authentication.findByToken(token);
+
+        return new LoginResponse(user.get().getId(), token);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")

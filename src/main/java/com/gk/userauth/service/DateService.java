@@ -3,9 +3,7 @@ package com.gk.userauth.service;
 import org.joda.time.DateTime;
 
 /**
- * Provides the current date.
- * 
- * @author jerome
+ * A service to provide the current date
  */
 public interface DateService {
 

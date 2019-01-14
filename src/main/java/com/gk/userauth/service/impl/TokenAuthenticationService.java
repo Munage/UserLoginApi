@@ -43,6 +43,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
 
     @Override
     public boolean logout(final String token) {
+        // Nothing to doy
         return users.logout(token);
     }
 }
