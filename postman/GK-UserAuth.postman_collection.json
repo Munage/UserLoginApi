@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "3dc4f941-8441-4cdb-a7a9-c3ac676a154e",
+		"name": "GK-UserAuth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/public/users/register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2dfdb0d9-56db-46e4-ac3a-7e1d4f65dafc",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"postman.setGlobalVariable(\"token\", data.token.token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "John",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "smith",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "0833638787",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/public/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/users/current",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/current",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/users/authenticated",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/authenticated",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"authenticated"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/public/users/logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWyiwuVrJSyk8uyS9ILUpT0lHKTCxRsjI0NTE3MbS0NLbQUUqtKIAKGBkYgQRKi1OL8hJzU4H6SlKLS5RqAairPD9GAAAA.ZsPy002r7mJ7ff5vfALgxeG_wV7saDpsEdBLV5cS-cA",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "Bearer {{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/public/users/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"users",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/public/users/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "John",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "smith",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/public/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
