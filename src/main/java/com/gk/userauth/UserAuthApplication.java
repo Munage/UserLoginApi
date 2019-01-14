@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class UserAuthApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(UserAuthApplication.class, args);
+	    SpringApplication.run(UserAuthApplication.class, args);
 	}
 
 	@Bean
