@@ -27,10 +27,14 @@ final class TokenAuthenticationService implements UserAuthenticationService {
 
     @Override
     public Optional<String> login(final String username, final String password) {
-        return users
+        Optional<String> result = users
                 .findByUsername(username)
                 .filter(user -> Objects.equals(password, user.getPassword()))
                 .map(user -> tokens.expiring(ImmutableMap.of("username", username)));
+
+        System.out.println("Login result: " + result.get());
+
+        return result;
     }
 
     @Override
@@ -44,6 +48,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     @Override
     public boolean logout(final String token) {
         // Nothing to doy
-        return users.logout(token);
+//        return users.logout(token);
+        return true;
     }
 }

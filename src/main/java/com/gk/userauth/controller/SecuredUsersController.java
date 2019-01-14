@@ -32,9 +32,9 @@ final class SecuredUsersController {
 
     @RequestMapping(value = "/authenticated", method = RequestMethod.GET, produces = "application/json")
     Map<String, List<User>> getLoggedInUsers(@AuthenticationPrincipal final User user) {
-         if(user != null){
-             return Collections.singletonMap("users", users.loggedInUsers());
-         }
+//         if(user != null){
+//             return Collections.singletonMap("users", users.loggedInUsers());
+//         }
 
          return Collections.singletonMap("users", new ArrayList<>());
     }

@@ -7,10 +7,10 @@ import lombok.Value;
 @Value
 @Builder
 public class LoginResponse {
-    String id;
+    Long id;
     String token;
 
-    public LoginResponse(String userId, String token) {
+    public LoginResponse(Long userId, String token) {
         this.id = userId;
         this.token = token;
     }
