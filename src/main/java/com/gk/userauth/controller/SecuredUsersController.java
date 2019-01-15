@@ -2,8 +2,6 @@ package com.gk.userauth.controller;
 
 import com.gk.userauth.domain.User;
 import com.gk.userauth.domain.UserSession;
-import com.gk.userauth.dto.UserDto;
-import com.gk.userauth.repository.UserRepository;
 import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.UserCrudService;
 import lombok.AllArgsConstructor;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -32,15 +31,16 @@ final class SecuredUsersController {
     @Autowired
     UserSessionRepository sessionRepository;
 
-
-
-
     @RequestMapping(value = "/authenticated", method = RequestMethod.GET, produces = "application/json")
-    Map<String, Iterable<UserSession>> getLoggedInUsers(@AuthenticationPrincipal final User user) {
+    Map<String, Integer> getLoggedInUsers(@AuthenticationPrincipal final User user) {
          if(user != null){
-             return Collections.singletonMap("users", sessionRepository.findAll());
+             //TODO: validate token before counting
+             Iterable<UserSession> sessions = sessionRepository.findAll();
+             AtomicInteger count = new AtomicInteger();
+             sessions.forEach(userSession -> count.getAndIncrement());
+             return Collections.singletonMap("active_sessions", count.intValue());
          }
 
-         return Collections.singletonMap("users", new ArrayList<>());
+         return Collections.singletonMap("users", 0);
     }
 }
