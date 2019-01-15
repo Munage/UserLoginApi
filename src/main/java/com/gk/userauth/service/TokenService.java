@@ -7,8 +7,6 @@ import java.util.Map;
  */
 public interface TokenService {
 
-    String permanent(Map<String, String> attributes);
-
     String expiring(Map<String, String> attributes);
 
     /**

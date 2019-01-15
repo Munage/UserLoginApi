@@ -3,9 +3,9 @@ package com.gk.userauth.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +22,9 @@ public class User implements UserDetails {
     String username;
     String phone;
     String password;
+
+    public User() {
+    }
 
     @JsonCreator
     public User(@JsonProperty("id") final Long id,

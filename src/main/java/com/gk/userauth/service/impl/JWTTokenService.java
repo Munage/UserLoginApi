@@ -1,6 +1,8 @@
 package com.gk.userauth.service.impl;
 
 
+import com.gk.userauth.domain.UserSession;
+import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.DateService;
 import com.gk.userauth.service.TokenService;
 import com.google.common.base.Supplier;
@@ -13,6 +15,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.compression.GzipCompressionCodec;
 import lombok.experimental.FieldDefaults;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -37,48 +40,55 @@ final class JWTTokenService implements Clock, TokenService {
     int clockSkewSec;
     String secretKey;
 
+    @Autowired
+    UserSessionRepository sessionRepository;
+
     JWTTokenService(final DateService dates,
                     @Value("${jwt.issuer:octoperf}") final String issuer,
-                    @Value("${jwt.expiration-sec:300}") final int expirationSec,
+                    @Value("${jwt.expiration-sec:180}") final int expirationSec,
                     @Value("${jwt.clock-skew-sec:0}") final int clockSkewSec,
-                    @Value("${jwt.secret:secret}") final String secret) {
+                    @Value("${jwt.secret:secret}") final String secret,
+                    UserSessionRepository sessionRepository) {
         super();
         this.dates = requireNonNull(dates);
         this.issuer = requireNonNull(issuer);
         this.expirationSec = requireNonNull(expirationSec);
         this.clockSkewSec = requireNonNull(clockSkewSec);
         this.secretKey = BASE64.encode(requireNonNull(secret));
-    }
-
-    @Override
-    public String permanent(final Map<String, String> attributes) {
-        return newToken(attributes, 0);
+        this.sessionRepository = sessionRepository;
     }
 
     @Override
     public String expiring(final Map<String, String> attributes) {
-        return newToken(attributes, expirationSec);
+        final DateTime now = dates.now();
+        final DateTime expiresAt = now.plusSeconds(expirationSec);
+
+        String token = newToken(attributes, now, expiresAt);
+        sessionRepository.save(new UserSession(token, attributes.values().toArray()[0].toString(), expiresAt.toDate()));
+
+        return token;
     }
 
-    private String newToken(final Map<String, String> attributes, final int expiresInSec) {
-        final DateTime now = dates.now();
+    private String newToken(final Map<String, String> attributes, DateTime now, final DateTime expiresAt) {
         final Claims claims = Jwts
                 .claims()
                 .setIssuer(issuer)
                 .setIssuedAt(now.toDate());
 
-        if (expiresInSec > 0) {
-            final DateTime expiresAt = now.plusSeconds(expiresInSec);
-            claims.setExpiration(expiresAt.toDate());
-        }
+        claims.setExpiration(expiresAt.toDate());
+
         claims.putAll(attributes);
 
-        return Jwts
+        String result = Jwts
                 .builder()
                 .setClaims(claims)
                 .signWith(HS256, secretKey)
                 .compressWith(COMPRESSION_CODEC)
                 .compact();
+
+        System.out.println("Token: " + result);
+
+        return result;
     }
 
     @Override

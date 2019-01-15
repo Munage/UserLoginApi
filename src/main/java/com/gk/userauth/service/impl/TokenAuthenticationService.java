@@ -1,6 +1,8 @@
 package com.gk.userauth.service.impl;
 
 import com.gk.userauth.domain.User;
+import com.gk.userauth.domain.UserSession;
+import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.TokenService;
 import com.gk.userauth.service.UserAuthenticationService;
 import com.gk.userauth.service.UserCrudService;
@@ -8,6 +10,7 @@ import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -25,16 +28,15 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     @NonNull
     UserCrudService users;
 
+
+
     @Override
     public Optional<String> login(final String username, final String password) {
-        Optional<String> result = users
+        Optional<String> token = users
                 .findByUsername(username)
                 .filter(user -> Objects.equals(password, user.getPassword()))
                 .map(user -> tokens.expiring(ImmutableMap.of("username", username)));
-
-        System.out.println("Login result: " + result.get());
-
-        return result;
+        return token;
     }
 
     @Override
