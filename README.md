@@ -6,7 +6,7 @@ This application is an example project on how to use JWT auth tokens to secure a
 ## Main building blocks
  * Spring Boot 2.1.2.RELEASE go to http://docs.spring.io/spring-boot/docs/2.1.2.RELEASE/reference/htmlsingle/ to learn more about spring boot
  * JSON Web Token go to https://jwt.io/ to decode your generated token and learn more
- * (Coming soon) H2 Database Engine - used for rapid prototyping and development, but not suitable for production at least in most cases. Go to www.h2database.com to learn more
+ * H2 Database Engine - used for rapid prototyping and development, but not suitable for production at least in most cases. Go to www.h2database.com to learn more
 
 ## Requirements
 * Java (1.8)

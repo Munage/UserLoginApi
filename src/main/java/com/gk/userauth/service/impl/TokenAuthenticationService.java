@@ -2,6 +2,7 @@ package com.gk.userauth.service.impl;
 
 import com.gk.userauth.domain.User;
 import com.gk.userauth.domain.UserSession;
+import com.gk.userauth.dto.LogoutResponse;
 import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.TokenService;
 import com.gk.userauth.service.UserAuthenticationService;
@@ -28,6 +29,9 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     @NonNull
     UserCrudService users;
 
+    @Autowired
+    UserSessionRepository sessionRepository;
+
 
 
     @Override
@@ -48,9 +52,20 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     }
 
     @Override
-    public boolean logout(final String token) {
+    public LogoutResponse logout(final String token) {
         // Nothing to doy
 //        return users.logout(token);
-        return true;
+        //Find user by token
+        Optional<UserSession> session = sessionRepository.findByAuthToken(token);
+        System.out.println("Finding session for token: " + session.get());
+
+
+        if(session.isPresent()){
+            sessionRepository.delete(session.get());
+            return new LogoutResponse("Success");
+        }
+
+        return new LogoutResponse("Failed");
+
     }
 }

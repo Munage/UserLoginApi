@@ -36,4 +36,6 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
       .flatMap(auth::findByToken)
       .orElseThrow(() -> new UsernameNotFoundException("Cannot find user with authentication token=" + token));
   }
+
+
 }

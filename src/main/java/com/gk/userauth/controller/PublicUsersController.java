@@ -2,6 +2,7 @@ package com.gk.userauth.controller;
 
 import com.gk.userauth.domain.User;
 import com.gk.userauth.dto.LoginResponse;
+import com.gk.userauth.dto.LogoutResponse;
 import com.gk.userauth.dto.UserDto;
 import com.gk.userauth.exceptions.UserAlreadyExistAuthenticationException;
 import com.gk.userauth.repository.UserRepository;
@@ -30,13 +31,14 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 final class PublicUsersController {
-    @NonNull
+    @Autowired
+
     UserAuthenticationService authentication;
 
-    @NonNull
+    @Autowired
     UserCrudService users;
 
-    @NonNull
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -78,7 +80,8 @@ final class PublicUsersController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
-    boolean logout(@RequestParam("token") final String token) {
+    LogoutResponse logout(@RequestParam("token") final String token) {
+
         return authentication.logout(token);
     }
 }

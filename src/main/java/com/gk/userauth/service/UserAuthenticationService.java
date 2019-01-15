@@ -1,6 +1,7 @@
 package com.gk.userauth.service;
 
 import com.gk.userauth.domain.User;
+import com.gk.userauth.dto.LogoutResponse;
 
 import java.util.Optional;
 
@@ -23,9 +24,9 @@ public interface UserAuthenticationService {
     Optional<User> findByToken(String token);
 
     /**
-     * Logs out the given input {@code user}.
-     *
-     * @param token of the user to logout
+     * Logs out the session with the given {@code token}
+     * @param token
+     * @return an {@link LogoutResponse} of the logout operation
      */
-    boolean logout(String token);
+    LogoutResponse logout(String token);
 }
