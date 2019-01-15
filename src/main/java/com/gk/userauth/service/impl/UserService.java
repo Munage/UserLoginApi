@@ -1,8 +1,7 @@
 package com.gk.userauth.service.impl;
 
-import com.gk.userauth.domain.User;
+import com.gk.userauth.models.User;
 import com.gk.userauth.repository.UserRepository;
-import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.UserCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -1,7 +1,7 @@
 package com.gk.userauth.service.impl;
 
 
-import com.gk.userauth.domain.UserSession;
+import com.gk.userauth.models.UserSession;
 import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.DateService;
 import com.gk.userauth.service.TokenService;

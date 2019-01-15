@@ -1,8 +1,8 @@
 package com.gk.userauth.service.impl;
 
-import com.gk.userauth.domain.User;
-import com.gk.userauth.domain.UserSession;
-import com.gk.userauth.dto.LogoutResponse;
+import com.gk.userauth.models.User;
+import com.gk.userauth.models.UserSession;
+import com.gk.userauth.controller.LogoutResponse;
 import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.TokenService;
 import com.gk.userauth.service.UserAuthenticationService;

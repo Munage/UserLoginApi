@@ -1,4 +1,4 @@
-package com.gk.userauth.dto;
+package com.gk.userauth.controller;
 
 import lombok.Builder;
 import lombok.Value;

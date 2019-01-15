@@ -1,7 +1,7 @@
 package com.gk.userauth.controller;
 
-import com.gk.userauth.domain.User;
-import com.gk.userauth.domain.UserSession;
+import com.gk.userauth.models.User;
+import com.gk.userauth.models.UserSession;
 import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.UserCrudService;
 import lombok.AllArgsConstructor;

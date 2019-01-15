@@ -1,6 +1,6 @@
-package com.gk.userauth.dto;
+package com.gk.userauth.controller;
 
-import com.gk.userauth.domain.User;
+import com.gk.userauth.models.User;
 import lombok.Builder;
 import lombok.Value;
 

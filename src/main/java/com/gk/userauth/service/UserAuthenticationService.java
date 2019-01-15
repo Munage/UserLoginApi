@@ -1,7 +1,7 @@
 package com.gk.userauth.service;
 
-import com.gk.userauth.domain.User;
-import com.gk.userauth.dto.LogoutResponse;
+import com.gk.userauth.models.User;
+import com.gk.userauth.controller.LogoutResponse;
 
 import java.util.Optional;
 

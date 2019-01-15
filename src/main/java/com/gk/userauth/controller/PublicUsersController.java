@@ -1,21 +1,14 @@
 package com.gk.userauth.controller;
 
-import com.gk.userauth.domain.User;
-import com.gk.userauth.dto.LoginResponse;
-import com.gk.userauth.dto.LogoutResponse;
-import com.gk.userauth.dto.UserDto;
-import com.gk.userauth.exceptions.UserAlreadyExistAuthenticationException;
+import com.gk.userauth.models.User;
 import com.gk.userauth.repository.UserRepository;
 import com.gk.userauth.service.impl.UserService;
 import com.gk.userauth.service.UserAuthenticationService;
 import com.gk.userauth.service.UserCrudService;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,8 +24,8 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 final class PublicUsersController {
-    @Autowired
 
+    @Autowired
     UserAuthenticationService authentication;
 
     @Autowired
