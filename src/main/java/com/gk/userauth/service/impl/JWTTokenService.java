@@ -76,7 +76,6 @@ final class JWTTokenService implements Clock, TokenService {
                 .setIssuedAt(now.toDate());
 
         claims.setExpiration(expiresAt.toDate());
-
         claims.putAll(attributes);
 
         String result = Jwts
@@ -99,6 +98,7 @@ final class JWTTokenService implements Clock, TokenService {
                 .setClock(this)
                 .setAllowedClockSkewSeconds(clockSkewSec)
                 .setSigningKey(secretKey);
+
         return parseClaims(() -> parser.parseClaimsJws(token).getBody());
     }
 

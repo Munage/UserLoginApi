@@ -1,11 +1,13 @@
 package com.gk.userauth.controller;
 
 import com.gk.userauth.domain.User;
+import com.gk.userauth.domain.UserSession;
 import com.gk.userauth.dto.LoginResponse;
 import com.gk.userauth.dto.LogoutResponse;
 import com.gk.userauth.dto.UserDto;
 import com.gk.userauth.exceptions.UserAlreadyExistAuthenticationException;
 import com.gk.userauth.repository.UserRepository;
+import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.impl.UserService;
 import com.gk.userauth.service.UserAuthenticationService;
 import com.gk.userauth.service.UserCrudService;
@@ -22,31 +24,36 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
 @RestController
-@RequestMapping("/public/users")
+@RequestMapping("/")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
-final class PublicUsersController {
+final class UsersController {
     @Autowired
-
     UserAuthenticationService authentication;
-
     @Autowired
     UserCrudService users;
-
     @Autowired
     UserService userService;
-
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserSessionRepository sessionRepository;
 
-
-    @RequestMapping(value = "/register", method = RequestMethod.PUT, produces = "application/json")
-    Map register(
+    /**
+     *
+     * @param username
+     * @param phone
+     * @param password
+     * @return
+     */
+    @RequestMapping(value = "/users", method = RequestMethod.PUT, produces = "application/json")
+    LoginResponse registerUser(
             @RequestParam("username") final String username,
             @RequestParam("phone") final String phone,
             @RequestParam("password") final String password) {
@@ -55,17 +62,45 @@ final class PublicUsersController {
                     .registerUser(new User(username, phone, password))
                     .orElseThrow(() -> new RuntimeException("Username already in use"));
 
-            return Collections.singletonMap("token", login(username, password));
+            return login(username, password);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
-    Map<String, Iterable<UserDto>> getRegisteredUsers(@AuthenticationPrincipal final User user) {
+    /**
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
+    Map getUsers(@AuthenticationPrincipal final User user) {
         ArrayList<UserDto> result = new ArrayList<>();
         userRepository.findAll().forEach(user1 -> result.add(new UserDto(user1)));
 
         return Collections.singletonMap("users", result);
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/users/authenticated", method = RequestMethod.GET, produces = "application/json")
+    Map getLoggedInUsers(@AuthenticationPrincipal final User user) {
+        if(user != null){
+            Iterable<UserSession> sessions = sessionRepository.findAll();
+            AtomicInteger count = new AtomicInteger();
+            sessions.forEach(userSession -> count.getAndIncrement());
+            return Collections.singletonMap("active_sessions", count.intValue());
+        }
+
+        return Collections.singletonMap("users", 0);
+    }
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     LoginResponse login(
             @RequestParam("username") final String username,
@@ -79,6 +114,11 @@ final class PublicUsersController {
         return new LoginResponse(user.get().getId(), token);
     }
 
+    /**
+     *
+     * @param token
+     * @return
+     */
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
     LogoutResponse logout(@RequestParam("token") final String token) {
 

@@ -32,8 +32,6 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     @Autowired
     UserSessionRepository sessionRepository;
 
-
-
     @Override
     public Optional<String> login(final String username, final String password) {
         Optional<String> token = users
