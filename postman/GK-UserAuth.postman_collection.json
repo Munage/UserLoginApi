@@ -6,15 +6,47 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/public/users/register",
+			"name": "Count valid sessions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/authenticated",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"authenticated"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register new user",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "2dfdb0d9-56db-46e4-ac3a-7e1d4f65dafc",
+						"id": "039df310-a6a6-42bd-8182-2e7423dc688e",
 						"exec": [
 							"var data = JSON.parse(responseBody);",
 							"postman.setGlobalVariable(\"token\", data.token.token);",
+							"postman.setGlobalVariable(\"user_id\", data.id);",
 							""
 						],
 						"type": "text/javascript"
@@ -34,7 +66,7 @@
 						},
 						{
 							"key": "password",
-							"value": "smith",
+							"value": "test",
 							"type": "text"
 						},
 						{
@@ -45,89 +77,28 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8080/public/users/register",
+					"raw": "http://localhost:8080/api/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"public",
-						"users",
-						"register"
+						"api",
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/users/current",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost:8080/users/current",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"current"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/users/authenticated",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost:8080/users/authenticated",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"authenticated"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/public/users/logout",
+			"name": "Logout",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWyiwuVrJSyk8uyS9ILUpT0lHKTCxRsjI0NTE3MbS0NLbQUUqtKIAKGBkYgQRKi1OL8hJzU4H6SlKLS5RqAairPD9GAAAA.ZsPy002r7mJ7ff5vfALgxeG_wV7saDpsEdBLV5cS-cA",
+						"value": "Bearer {{token}}",
 						"type": "text",
 						"disabled": true
 					}
@@ -137,29 +108,44 @@
 					"formdata": [
 						{
 							"key": "token",
-							"value": "Bearer {{token}}",
+							"value": "{{token}}",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8080/public/users/logout",
+					"raw": "http://localhost:8080/api/logout/{{user_id}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"public",
-						"users",
-						"logout"
+						"api",
+						"logout",
+						"{{user_id}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/public/users/login",
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb8931f1-592c-4d77-85a1-e0d11ad86e1a",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"postman.setGlobalVariable(\"token\", data.token);",
+							"postman.setGlobalVariable(\"user_id\", data.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -168,27 +154,57 @@
 					"formdata": [
 						{
 							"key": "username",
-							"value": "John",
+							"value": "admin",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "smith",
+							"value": "test",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8080/public/users/login",
+					"raw": "http://localhost:8080/api/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"public",
-						"users",
+						"api",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List registered users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
 					]
 				}
 			},
