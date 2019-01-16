@@ -6,37 +6,6 @@
 	},
 	"item": [
 		{
-			"name": "Count valid sessions",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/users/authenticated",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						"authenticated"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Register new user",
 			"event": [
 				{
@@ -71,7 +40,7 @@
 						},
 						{
 							"key": "phone",
-							"value": "0833638787",
+							"value": "0831234123",
 							"type": "text"
 						}
 					]
@@ -86,44 +55,6 @@
 					"path": [
 						"api",
 						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Logout",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/logout/{{user_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"logout",
-						"{{user_id}}"
 					]
 				}
 			},
@@ -205,6 +136,75 @@
 					"path": [
 						"api",
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/logout/{{user_id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"logout",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Count valid sessions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/authenticated",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"authenticated"
 					]
 				}
 			},
