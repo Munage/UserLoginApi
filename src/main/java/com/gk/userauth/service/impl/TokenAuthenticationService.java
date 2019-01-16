@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -33,14 +34,15 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     @Autowired
     UserSessionRepository sessionRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public Optional<String> login(final String username, final String password) {
 
         Optional<UserSession> existingSession = sessionRepository.findByUsername(username);
-
         Optional<String> token = users
                 .findByUsername(username)
-                .filter(user -> Objects.equals(password, user.getPassword()))
+                .filter(user -> bCryptPasswordEncoder.matches(password, user.getPassword()))
                 .map(user -> tokens.expiring(ImmutableMap.of("username", username)));
 
         //If the user had a session, delete it from the db after the new one is created

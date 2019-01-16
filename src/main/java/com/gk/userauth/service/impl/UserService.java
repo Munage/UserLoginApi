@@ -36,7 +36,7 @@ public class UserService implements UserCrudService, UserSessionService {
     public Optional<User> registerUser(User user) {
         try {
             //Encrypt the users password before being saved in the DB
-//            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
             return Optional.of(userRepository.save(user));
         } catch (Exception jdbcException) {

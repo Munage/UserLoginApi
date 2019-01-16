@@ -85,8 +85,6 @@ final class JWTTokenService implements Clock, TokenService {
                 .compressWith(COMPRESSION_CODEC)
                 .compact();
 
-        System.out.println("Token: " + result);
-
         return result;
     }
 
