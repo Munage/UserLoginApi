@@ -8,6 +8,7 @@ import com.gk.userauth.dto.UserDto;
 import com.gk.userauth.exceptions.UserAlreadyExistAuthenticationException;
 import com.gk.userauth.repository.UserRepository;
 import com.gk.userauth.repository.UserSessionRepository;
+import com.gk.userauth.service.TokenService;
 import com.gk.userauth.service.impl.UserService;
 import com.gk.userauth.service.UserAuthenticationService;
 import com.gk.userauth.service.UserCrudService;
@@ -85,14 +86,7 @@ final class UsersController {
      */
     @RequestMapping(value = "/users/authenticated", method = RequestMethod.GET, produces = "application/json")
     Map getLoggedInUsers(@AuthenticationPrincipal final User user) {
-        if(user != null){
-            Iterable<UserSession> sessions = sessionRepository.findAll();
-            AtomicInteger count = new AtomicInteger();
-            sessions.forEach(userSession -> count.getAndIncrement());
-            return Collections.singletonMap("active_sessions", count.intValue());
-        }
-
-        return Collections.singletonMap("users", 0);
+        return Collections.singletonMap("active_sessions", userService.countActiveSessions());
     }
 
     /**
@@ -119,9 +113,8 @@ final class UsersController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
-    LogoutResponse logout(@RequestParam("token") final String token) {
-
+    @RequestMapping(value = "/logout/{id}", method = RequestMethod.POST, produces = "application/json")
+    LogoutResponse logout(@PathVariable("id") long userId, @RequestParam("token") final String token) {
         return authentication.logout(token);
     }
 }

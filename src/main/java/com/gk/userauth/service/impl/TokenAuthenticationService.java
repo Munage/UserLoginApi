@@ -34,10 +34,19 @@ final class TokenAuthenticationService implements UserAuthenticationService {
 
     @Override
     public Optional<String> login(final String username, final String password) {
+
+        Optional<UserSession> existingSession = sessionRepository.findByUsername(username);
+
         Optional<String> token = users
                 .findByUsername(username)
                 .filter(user -> Objects.equals(password, user.getPassword()))
                 .map(user -> tokens.expiring(ImmutableMap.of("username", username)));
+
+        //If the user had a session, delete it from the db after the new one is created
+        if(existingSession.isPresent()){
+            sessionRepository.delete(existingSession.get());
+        }
+
         return token;
     }
 
@@ -51,19 +60,18 @@ final class TokenAuthenticationService implements UserAuthenticationService {
 
     @Override
     public LogoutResponse logout(final String token) {
-        // Nothing to doy
-//        return users.logout(token);
+        // Nothing to do since jwt tokens cant be killed (unless you make them stateful...),
+        // so just remove the user session from the DB
+
         //Find user by token
         Optional<UserSession> session = sessionRepository.findByAuthToken(token);
-        System.out.println("Finding session for token: " + session.get());
-
 
         if(session.isPresent()){
             sessionRepository.delete(session.get());
-            return new LogoutResponse("Success");
+            return new LogoutResponse("Success - Logged out successfully");
         }
 
-        return new LogoutResponse("Failed");
+        return new LogoutResponse("Failed - Unable to log out user");
 
     }
 }

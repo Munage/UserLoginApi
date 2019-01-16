@@ -34,7 +34,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     new AntPathRequestMatcher("/users", "PUT"),
     new AntPathRequestMatcher("/users", "GET"),
     new AntPathRequestMatcher("/login", "POST"),
-    new AntPathRequestMatcher("/logout", "POST"),
+    new AntPathRequestMatcher("/logout/**", "POST"),
     new AntPathRequestMatcher("/h2/**"),
     new AntPathRequestMatcher("/error/**")
   );

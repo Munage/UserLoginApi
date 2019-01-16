@@ -45,7 +45,7 @@ final class JWTTokenService implements Clock, TokenService {
 
     JWTTokenService(final DateService dates,
                     @Value("${jwt.issuer:gkuserapi}") final String issuer,
-                    @Value("${jwt.expiration-sec:180}") final int expirationSec,
+                    @Value("${jwt.expiration-sec:10}") final int expirationSec,
                     @Value("${jwt.clock-skew-sec:0}") final int clockSkewSec,
                     @Value("${jwt.secret:secret}") final String secret,
                     UserSessionRepository sessionRepository) {
@@ -100,19 +100,6 @@ final class JWTTokenService implements Clock, TokenService {
                 .setSigningKey(secretKey);
 
         return parseClaims(() -> parser.parseClaimsJws(token).getBody());
-    }
-
-    @Override
-    public Map<String, String> untrusted(final String token) {
-        final JwtParser parser = Jwts
-                .parser()
-                .requireIssuer(issuer)
-                .setClock(this)
-                .setAllowedClockSkewSeconds(clockSkewSec);
-
-        // See: https://github.com/jwtk/jjwt/issues/135
-        final String withoutSignature = substringBeforeLast(token, DOT) + DOT;
-        return parseClaims(() -> parser.parseClaimsJwt(withoutSignature).getBody());
     }
 
     private static Map<String, String> parseClaims(final Supplier<Claims> toClaims) {

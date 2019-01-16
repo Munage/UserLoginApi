@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface UserSessionRepository extends CrudRepository<UserSession, Long> {
 
     Optional<UserSession> findByAuthToken(String token);
+
+    Optional<UserSession> findByUsername(String username);
 }
