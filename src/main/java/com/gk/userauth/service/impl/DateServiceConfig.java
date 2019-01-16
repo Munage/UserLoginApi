@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DateServiceConfig {
 
-  @Bean
-  DateService dateService() {
-    return new JodaDateService(defaultTimeZone());
-  }
+    @Bean
+    DateService dateService() {
+        return new JodaDateService(defaultTimeZone());
+    }
 
-  @Bean
-  DateTimeZone defaultTimeZone() {
-    return DateTimeZone.UTC;
-  }
+    @Bean
+    DateTimeZone defaultTimeZone() {
+        return DateTimeZone.UTC;
+    }
 }

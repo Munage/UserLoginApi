@@ -25,6 +25,7 @@ public interface UserAuthenticationService {
 
     /**
      * Logs out the session with the given {@code token}
+     *
      * @param token
      * @return an {@link LogoutResponse} of the logout operation
      */

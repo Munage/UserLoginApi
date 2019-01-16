@@ -47,7 +47,6 @@ final class UsersController {
     UserSessionRepository sessionRepository;
 
     /**
-     *
      * @param username
      * @param phone
      * @param password
@@ -59,15 +58,14 @@ final class UsersController {
             @RequestParam("phone") final String phone,
             @RequestParam("password") final String password) {
 
-            userService
-                    .registerUser(new User(username, phone, password))
-                    .orElseThrow(() -> new RuntimeException("Username already in use"));
+        userService
+                .registerUser(new User(username, phone, password))
+                .orElseThrow(() -> new RuntimeException("Username already in use"));
 
-            return login(username, password);
+        return login(username, password);
     }
 
     /**
-     *
      * @param user
      * @return
      */
@@ -80,7 +78,6 @@ final class UsersController {
     }
 
     /**
-     *
      * @param user
      * @return
      */
@@ -90,7 +87,6 @@ final class UsersController {
     }
 
     /**
-     *
      * @param username
      * @param password
      * @return
@@ -109,7 +105,6 @@ final class UsersController {
     }
 
     /**
-     *
      * @param token
      * @return
      */

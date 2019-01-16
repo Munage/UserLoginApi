@@ -43,7 +43,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
                 .map(user -> tokens.expiring(ImmutableMap.of("username", username)));
 
         //If the user had a session, delete it from the db after the new one is created
-        if(existingSession.isPresent()){
+        if (existingSession.isPresent()) {
             sessionRepository.delete(existingSession.get());
         }
 
@@ -66,7 +66,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
         //Find user by token
         Optional<UserSession> session = sessionRepository.findByAuthToken(token);
 
-        if(session.isPresent()){
+        if (session.isPresent()) {
             sessionRepository.delete(session.get());
             return new LogoutResponse("Success - Logged out successfully");
         }
