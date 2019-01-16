@@ -1,14 +1,17 @@
 package com.gk.userauth.controller;
 
+/**
+ * The Users controller is responsible for defining endpoints relating to User CRUD operations
+ * and any functionality directly related to the user domain
+ */
+
 import com.gk.userauth.domain.User;
 import com.gk.userauth.dto.LoginResponse;
 import com.gk.userauth.dto.LogoutResponse;
 import com.gk.userauth.dto.UserDto;
 import com.gk.userauth.exceptions.UserAlreadyExistsException;
 import com.gk.userauth.repository.UserRepository;
-import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.UserAuthenticationService;
-import com.gk.userauth.service.UserCrudService;
 import com.gk.userauth.service.impl.UserService;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,19 +38,12 @@ final class UsersController {
     @Autowired
     UserAuthenticationService authentication;
     @Autowired
-    UserCrudService users;
-    @Autowired
     UserService userService;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    UserSessionRepository sessionRepository;
 
     /**
-     * @param username
-     * @param phone
-     * @param password
-     * @return
+     * Registers a new user and creates a new user session
      */
     @RequestMapping(value = "/users", method = RequestMethod.PUT, produces = "application/json")
     LoginResponse registerUser(
@@ -63,8 +59,7 @@ final class UsersController {
     }
 
     /**
-     * @param user
-     * @return
+     * Returns a collection of all registered users
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
     Map getUsers(@AuthenticationPrincipal final User user) {
@@ -75,8 +70,7 @@ final class UsersController {
     }
 
     /**
-     * @param user
-     * @return
+     * Counts the number of valid user sessions
      */
     @RequestMapping(value = "/users/authenticated", method = RequestMethod.GET, produces = "application/json")
     Map getLoggedInUsers(@AuthenticationPrincipal final User user) {
@@ -84,9 +78,7 @@ final class UsersController {
     }
 
     /**
-     * @param username
-     * @param password
-     * @return
+     * Creates a new session for a user
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     LoginResponse login(
@@ -102,8 +94,7 @@ final class UsersController {
     }
 
     /**
-     * @param token
-     * @return
+     * Terminates the user session for the given user
      */
     @RequestMapping(value = "/logout/{id}", method = RequestMethod.POST, produces = "application/json")
     LogoutResponse logout(@PathVariable("id") long userId, @RequestParam("token") final String token) {

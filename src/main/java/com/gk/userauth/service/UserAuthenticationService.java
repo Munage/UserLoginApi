@@ -11,15 +11,15 @@ public interface UserAuthenticationService {
      *
      * @param username
      * @param password
-     * @return an {@link Optional} of a user when login succeeds
+     * @return an {@link Optional} of a user
      */
     Optional<String> login(String username, String password);
 
     /**
-     * Finds a user by its dao-key.
+     * Finds a user by its jwts auth token.
      *
-     * @param token user dao key
-     * @return
+     * @param token user jwts auth token
+     * @returnan {@link Optional} of a user
      */
     Optional<User> findByToken(String token);
 
