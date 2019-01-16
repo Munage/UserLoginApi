@@ -1,4 +1,4 @@
-package com.gk.userauth.security.config;
+package com.gk.userauth.security;
 
 import org.springframework.security.web.RedirectStrategy;
 

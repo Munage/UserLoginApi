@@ -1,4 +1,4 @@
-package com.gk.userauth.security.config;
+package com.gk.userauth.security;
 
 import lombok.experimental.FieldDefaults;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

@@ -1,4 +1,4 @@
-package com.gk.userauth.security.config;
+package com.gk.userauth.security;
 
 import com.gk.userauth.service.UserAuthenticationService;
 import lombok.AllArgsConstructor;

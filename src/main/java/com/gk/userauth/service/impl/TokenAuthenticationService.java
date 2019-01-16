@@ -3,6 +3,7 @@ package com.gk.userauth.service.impl;
 import com.gk.userauth.domain.User;
 import com.gk.userauth.domain.UserSession;
 import com.gk.userauth.dto.LogoutResponse;
+import com.gk.userauth.exceptions.UserNotFoundException;
 import com.gk.userauth.repository.UserSessionRepository;
 import com.gk.userauth.service.TokenService;
 import com.gk.userauth.service.UserAuthenticationService;
@@ -71,7 +72,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
             return new LogoutResponse("Success - Logged out successfully");
         }
 
-        return new LogoutResponse("Failed - Unable to log out user");
+        throw new UserNotFoundException("User not found");
 
     }
 }
